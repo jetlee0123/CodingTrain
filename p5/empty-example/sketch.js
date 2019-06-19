@@ -1,28 +1,31 @@
-let bubble1;
-let bubble2;
+let bubbles = [];
 
 function setup() {
   createCanvas(600, 400);
-  bubble1 = new Bubble(200, 200, 40); //constructorの引数(width,height,radius)
-  bubble2 = new Bubble(400, 200, 20);
+}
+
+function mouseDragged() {
+  let r = random(10, 50);
+  let b = new Bubble(mouseX, mouseY, r);
+  bubbles.push(b)
 }
 
 function draw() {
   background(0);
-  bubble1.move();
-  bubble1.show();
-  bubble2.move();
-  bubble2.show();
+  for (let i = 0; i < bubbles.length; i++) {
+    bubbles[i].move();
+    bubbles[i].show();
+  }
 }
 
 //class=設計図
 //constructor=instanceを作成(new class)した時点で実行されるメソッド(関数)のこと
 //constructorの引数には、new class_nameの引数が入る
 class Bubble {
-  constructor(unicorn, fluffy, rainbow) { /
-    this.x = unicorn;
-    this.y = fluffy;
-    this.r = rainbow;
+  constructor(x, y, r) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
   }
 
   move() {
@@ -34,12 +37,6 @@ class Bubble {
     stroke(255);
     strokeWeight(4);
     noFill();
-    ellipse(this.x, this.y, this.r*2);
+    ellipse(this.x, this.y, this.r * 2);
   }
 }
-
-// function show() {
-// }
-
-// function move() {
-// }
