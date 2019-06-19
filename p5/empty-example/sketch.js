@@ -1,41 +1,41 @@
+//成果物1)ゲーム
+//bubbleをn個出して全部消すまでのタイムを競う
+//タイムに応じてランクを決める
+
 let bubbles = [];
 
 function setup() {
   createCanvas(600, 400);
-  for (let i = 0; i < 5; i++) {
-    let x = random(width);
-    let y = random(height);
-    let r = random(10, 50);
-    let b = new Bubble(x, y, r);
-    bubbles.push(b)
-  }
-
 
 }
 
-function mousePressed() {
-  for (let i = 0; i < bubbles.length; i++) {
-    bubbles[i].clicked(mouseX,mouseY);
-  }
-}
+//bubbleを消す
+function mouseDragged() {
+  let r = 40;
+  let b = new Bubble(mouseX, mouseY, r);
+  bubbles.push(b);
 
-// function mousePressed() {
-//   let r = random(10, 50);
-//   let b = new Bubble(mouseX, mouseY, r);
-//   bubbles.push(b)
-// }
+}
 
 function draw() {
   background(0);
   for (let i = 0; i < bubbles.length; i++) {
+    if (bubbles[i].contains(mouseX, mouseY)){
+      bubbles[i].changeColor(255);
+    } else {
+      bubbles[i].changeColor(0);
+    }
     bubbles[i].move();
     bubbles[i].show();
+  }
+
+  if (bubbles.length > 10) {
+    bubbles.splice(0,1);
   }
 }
 
 //class=設計図
 //constructor=instanceを作成(new class)した時点で実行されるメソッド(関数)のこと
-
 class Bubble {
   constructor(x, y, r) {
     this.x = x;
@@ -44,23 +44,28 @@ class Bubble {
     this.brightness = 0;
   }
 
-  clicked(px, py) {
-    let d = dist(px, py, this.x, this.y); //dist(x1,y1,x2,y2)
+  changeColor(bright) {
+    this.brightness = bright;
+  }
+
+  contains(px, py) {
+    let d = dist(px, py, this.x, this.y);
     if (d < this.r) {
-      this.brightness = 255;
-      // console.log("CLICKED ON BUBBLE!");
+      return true; 
+    } else {
+      return false;
     }
   }
 
   move() {
-    this.x = this.x + random(-5, 5);
-    this.y = this.y + random(-5, 5);
+    this.x = this.x + random(-2, 2);
+    this.y = this.y + random(-2, 2);
   }
 
   show() {
     stroke(255);
     strokeWeight(4);
-    fill(this.brightness, 100);
+    fill(this.brightness, 125);
     ellipse(this.x, this.y, this.r * 2);
   }
 }
